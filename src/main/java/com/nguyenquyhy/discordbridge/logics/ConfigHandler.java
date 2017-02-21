@@ -7,6 +7,7 @@ import com.nguyenquyhy.discordbridge.database.JsonFileStorage;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.models.TokenStore;
+import com.nguyenquyhy.discordbridge.models.command.CommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ConfigUtil;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -25,10 +26,11 @@ import java.nio.file.Paths;
  * Created by Hy on 8/6/2016.
  */
 public class ConfigHandler {
+    private static DiscordBridge mod = DiscordBridge.getInstance();
+    private static Logger logger = mod.getLogger();
+    private static Path configDir = mod.getConfigDir();
+
     public static GlobalConfig loadConfiguration() throws ObjectMappingException, IOException {
-        DiscordBridge mod = DiscordBridge.getInstance();
-        Logger logger = mod.getLogger();
-        Path configDir = mod.getConfigDir();
 
         if (!Files.exists(configDir)) {
             Files.createDirectories(configDir);
@@ -105,6 +107,30 @@ public class ConfigHandler {
                 logger.warn("No Token Store! Logging in will be disabled.");
                 break;
         }
+        return config;
+    }
+
+    public static CommandConfig loadCommandConfiguration() throws ObjectMappingException, IOException {
+        if (!Files.exists(configDir)) {
+            Files.createDirectories(configDir);
+        }
+
+        Path configFile = Paths.get(configDir + "/commands.json");
+
+        GsonConfigurationLoader configLoader = GsonConfigurationLoader.builder().setPath(configFile).build();
+        ConfigurationNode configNode = configLoader.load();
+
+        CommandConfig config = configNode.getValue(TypeToken.of(CommandConfig.class), new CommandConfig());
+
+        if (!Files.exists(configFile)) {
+            Files.createFile(configFile);
+            logger.info("Created default command configuration!");
+        }
+
+        configNode.setValue(TypeToken.of(CommandConfig.class), config);
+        configLoader.save(configNode);
+        logger.info("Command Configuration loaded.");
+
         return config;
     }
 }

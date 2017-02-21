@@ -1,4 +1,4 @@
-package com.nguyenquyhy.discordbridge.commands;
+package com.nguyenquyhy.discordbridge.commands.minecraft;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;

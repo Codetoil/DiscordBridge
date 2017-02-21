@@ -1,11 +1,11 @@
 plugins {
-    id "com.qixalite.spongestart" version "1.5.2"
     id 'java'
+    id "com.qixalite.spongestart" version "1.5.2"
     id 'com.github.johnrengelman.shadow' version '1.2.3'
     //id 'org.spongepowered.plugin' version '0.5.1'
 }
 
-defaultTasks 'build', 'shadowJar'
+defaultTasks 'build'
 
 group = 'com.nguyenquyhy'
 version = '2.3.0'
@@ -42,6 +42,8 @@ spongestart{
 dependencies {
     compile('org.spongepowered:spongeapi:5.0.0')
     compile files('libs/javacord-2.0.14-shaded.jar')
+    compile('de.btobastian.sdcf4j:sdcf4j-core:1.0.4')
+    compile('de.btobastian.sdcf4j:sdcf4j-javacord:1.0.4')
 //    compile('de.btobastian.javacord:javacord:2.0.11:shaded')
 //    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
 //    compile 'org.apache.httpcomponents:httpcore:4.3.2'
@@ -63,6 +65,8 @@ shadowJar {
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')
         include dependency('org.apache.httpcomponents:httpclient')
+        include dependency('de.btobastian.sdcf4j:sdcf4j-core')
+        include dependency('de.btobastian.sdcf4j:sdcf4j-javacord')
 //        include dependency('com.googlecode.json-simple:json-simple')
 //        include dependency('org.java-websocket:Java-WebSocket')
 //        include dependency('net.jodah:typetools')
@@ -71,3 +75,5 @@ shadowJar {
         relocate 'org.apache.commons', 'shaded.apache.commons'
     }
 }
+
+build.dependsOn(shadowJar)

@@ -1,4 +1,4 @@
-package com.nguyenquyhy.discordbridge.commands;
+package com.nguyenquyhy.discordbridge.commands.minecraft;
 
 import com.nguyenquyhy.discordbridge.logics.LoginHandler;
 import org.spongepowered.api.command.CommandException;

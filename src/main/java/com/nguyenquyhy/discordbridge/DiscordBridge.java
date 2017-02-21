@@ -1,6 +1,7 @@
 package com.nguyenquyhy.discordbridge;
 
 import com.google.inject.Inject;
+import com.nguyenquyhy.discordbridge.commands.MinecraftCommands;
 import com.nguyenquyhy.discordbridge.database.IStorage;
 import com.nguyenquyhy.discordbridge.listeners.ChatListener;
 import com.nguyenquyhy.discordbridge.listeners.ClientConnectionListener;
@@ -9,6 +10,7 @@ import com.nguyenquyhy.discordbridge.logics.ConfigHandler;
 import com.nguyenquyhy.discordbridge.logics.LoginHandler;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.models.command.CommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import de.btobastian.javacord.DiscordAPI;
@@ -24,6 +26,8 @@ import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -50,6 +54,7 @@ public class DiscordBridge {
     private Path configDir;
 
     private GlobalConfig config;
+    private CommandConfig commandConfig;
 
     @Inject
     private Game game;
@@ -57,11 +62,13 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
+    private static DiscordSource commandSource = new DiscordSource();
 
     @Listener
     public void onPreInitialization(GamePreInitializationEvent event) throws IOException, ObjectMappingException {
         instance = this;
         config = ConfigHandler.loadConfiguration();
+        commandConfig = ConfigHandler.loadCommandConfiguration();
 
         Sponge.getEventManager().registerListeners(this, new ChatListener());
         Sponge.getEventManager().registerListeners(this, new ClientConnectionListener());
@@ -70,7 +77,7 @@ public class DiscordBridge {
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        CommandRegistry.register();
+        MinecraftCommands.register();
         LoginHandler.loginBotAccount();
     }
 
@@ -92,8 +99,26 @@ public class DiscordBridge {
         }
     }
 
+    public static Text reload() {
+        try {
+            GlobalConfig config = ConfigHandler.loadConfiguration();
+            DiscordBridge.getInstance().setConfig(config);
+            CommandConfig commandConfig = ConfigHandler.loadCommandConfiguration();
+            DiscordBridge.getInstance().setConfig(commandConfig);
+            getInstance().getLogger().info("Configuration reloaded!");
+            return Text.of(TextColors.GREEN, "Configuration reloaded!");
+        } catch (Exception e) {
+            getInstance().getLogger().error("Cannot reload configuration!", e);
+            return Text.of(TextColors.RED, "Unable to reload configuration!");
+        }
+    }
+
     public static DiscordBridge getInstance() {
         return instance;
+    }
+
+    public DiscordSource getCommandSource() {
+        return commandSource;
     }
 
     public Game getGame() {
@@ -108,8 +133,16 @@ public class DiscordBridge {
         return config;
     }
 
+    public CommandConfig getCommandConfig() {
+        return commandConfig;
+    }
+
     public void setConfig(GlobalConfig config) {
         this.config = config;
+    }
+
+    public void setConfig(CommandConfig commandConfig) {
+        this.commandConfig = commandConfig;
     }
 
     public Logger getLogger() {

@@ -1,6 +1,7 @@
-package com.nguyenquyhy.discordbridge;
+package com.nguyenquyhy.discordbridge.commands;
 
-import com.nguyenquyhy.discordbridge.commands.*;
+import com.nguyenquyhy.discordbridge.DiscordBridge;
+import com.nguyenquyhy.discordbridge.commands.minecraft.*;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
@@ -8,7 +9,7 @@ import org.spongepowered.api.text.Text;
 /**
  * Created by Hy on 8/5/2016.
  */
-public class CommandRegistry {
+public class MinecraftCommands {
     /**
      * Register all commands
      */
@@ -66,7 +67,6 @@ public class CommandRegistry {
                 .build();
 
         CommandSpec mainCommandSpec = CommandSpec.builder()
-                //.permission("discordbridge")
                 .description(Text.of("Discord in Minecraft"))
                 .child(loginCmd, "login", "l")
                 .child(loginConfirmCmd, "loginconfirm", "lc")
@@ -81,6 +81,6 @@ public class CommandRegistry {
         DiscordBridge mod = DiscordBridge.getInstance();
         mod.getGame().getCommandManager().register(mod, mainCommandSpec, "discord", "d");
 
-        mod.getLogger().info("/discord command registered.");
+        mod.getLogger().info("Minecraft /discord command registered.");
     }
 }
