@@ -2,6 +2,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;
@@ -53,6 +54,6 @@ public class TpsCommand implements CommandExecutor {
         command.delete();
 
 
-        return String.format(config.template, mod.getGame().getServer().getTicksPerSecond());
+        return ChannelUtil.SPECIAL_CHAR + String.format(config.template, mod.getGame().getServer().getTicksPerSecond());
     }
 }

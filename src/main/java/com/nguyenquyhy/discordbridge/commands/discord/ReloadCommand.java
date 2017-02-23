@@ -2,6 +2,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;
@@ -45,6 +46,6 @@ public class ReloadCommand implements CommandExecutor {
         // Delete the command message
         command.delete();
 
-       return DiscordBridge.reload().toPlain();
+       return ChannelUtil.SPECIAL_CHAR + DiscordBridge.reload().toPlain();
     }
 }

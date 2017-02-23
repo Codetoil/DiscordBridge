@@ -3,6 +3,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 import co.aikar.timings.Timings;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;
@@ -63,7 +64,7 @@ public class TimingsCommand implements CommandExecutor {
         }
 
         if (!config.directMessage)
-            return message;
+            return ChannelUtil.SPECIAL_CHAR + message;
         user.sendMessage(message);
         return null;
     }

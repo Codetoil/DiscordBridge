@@ -2,6 +2,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class OnlineCommand implements CommandExecutor {
     private static DiscordBridge mod = DiscordBridge.getInstance();
 
-    private static String headerTemplate = "**Online Players:**\n```";
+    private static String headerTemplate = "**Online Players:**```\n";
     private static String playerTemplate = "%a";
     private static String footerTemplate = "```";
     private static String offlineTemplate = "**No Online Players**";
@@ -79,6 +80,6 @@ public class OnlineCommand implements CommandExecutor {
         }
         message += config.footerTemplate;
 
-        return message;
+        return ChannelUtil.SPECIAL_CHAR + message;
     }
 }
