@@ -41,9 +41,9 @@ import java.util.UUID;
 public class LoginHandler {
     private static DiscordBridge mod = DiscordBridge.getInstance();
     private static Logger logger = mod.getLogger();
-    private static GlobalConfig config = mod.getConfig();
 
     public static boolean loginBotAccount() {
+        GlobalConfig config = mod.getConfig();
 
         if (StringUtils.isBlank(config.botToken)) {
             logger.warn("No Bot token is available! Messages can only get from and to authenticated players.");
@@ -181,6 +181,7 @@ public class LoginHandler {
     }
 
     private static void prepareBotClient(DiscordAPI client, CommandSource commandSource) {
+        GlobalConfig config = mod.getConfig();
 
         if (commandSource != null)
             commandSource.sendMessage(Text.of(TextColors.GOLD, TextStyles.BOLD, "Logging in..."));
@@ -230,6 +231,7 @@ public class LoginHandler {
     }
 
     private static void prepareHumanClient(DiscordAPI client, CommandSource commandSource) {
+        GlobalConfig config = mod.getConfig();
 
         client.connect(new FutureCallback<DiscordAPI>() {
             @Override
