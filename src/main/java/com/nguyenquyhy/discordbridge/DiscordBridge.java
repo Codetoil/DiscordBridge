@@ -3,6 +3,7 @@ package com.nguyenquyhy.discordbridge;
 import com.google.inject.Inject;
 import com.nguyenquyhy.discordbridge.commands.MinecraftCommands;
 import com.nguyenquyhy.discordbridge.database.IStorage;
+import com.nguyenquyhy.discordbridge.listeners.AchievementListener;
 import com.nguyenquyhy.discordbridge.listeners.ChatListener;
 import com.nguyenquyhy.discordbridge.listeners.ClientConnectionListener;
 import com.nguyenquyhy.discordbridge.listeners.DeathListener;
@@ -72,6 +73,7 @@ public class DiscordBridge {
 
         Sponge.getEventManager().registerListeners(this, new ChatListener());
         Sponge.getEventManager().registerListeners(this, new ClientConnectionListener());
+        Sponge.getEventManager().registerListeners(this, new AchievementListener());
         Sponge.getEventManager().registerListeners(this, new DeathListener());
     }
 

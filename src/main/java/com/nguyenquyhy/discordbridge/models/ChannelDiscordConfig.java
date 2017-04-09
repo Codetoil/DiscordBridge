@@ -21,6 +21,7 @@ public class ChannelDiscordConfig {
         serverUpMessage = "Server has started.";
         serverDownMessage = "Server has stopped.";
         broadcastTemplate = "_<BROADCAST> %s_";
+        achievementTemplate = "**%a has just earned the achievement [%s]**";
         deathTemplate = "**%s**";
     }
 
@@ -38,6 +39,8 @@ public class ChannelDiscordConfig {
     public String serverDownMessage;
     @Setting
     public String broadcastTemplate;
+    @Setting
+    public String achievementTemplate;
     @Setting
     public String deathTemplate;
 
