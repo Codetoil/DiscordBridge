@@ -24,7 +24,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
@@ -38,7 +38,7 @@ import java.util.*;
  * Created by Hy on 1/4/2016.
  */
 @Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.4.2",
-        description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy", "Mohron"})
+    description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy", "Mohron"})
 public class DiscordBridge {
 
     private DiscordAPI consoleClient = null;
@@ -63,6 +63,7 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
+    private int playerCount = 0;
 
     @Listener
     public void onPreInitialization(GamePreInitializationEvent event) throws IOException, ObjectMappingException {
@@ -77,26 +78,31 @@ public class DiscordBridge {
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStarting(GameStartingServerEvent event) {
         MinecraftCommands.register();
         LoginHandler.loginBotAccount();
     }
+
 
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
         if (botClient != null) {
             for (ChannelConfig channelConfig : config.channels) {
                 if (StringUtils.isNotBlank(channelConfig.discordId)
-                        && channelConfig.discord != null
-                        && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
+                    && channelConfig.discord != null
+                    && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
                     Channel channel = botClient.getChannelById(channelConfig.discordId);
                     if (channel != null) {
                         ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
+                        // TODO Update with template
+                        // ChannelUtil.setDescription(channel, "Offline");
                     } else {
                         ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
                     }
                 }
             }
+
+
         }
     }
 
@@ -176,6 +182,14 @@ public class DiscordBridge {
         } else {
             humanClients.put(player, client);
         }
+    }
+
+    public void updatePlayerCount(int change) {
+        playerCount += change;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     public void removeAndLogoutClient(UUID player) {

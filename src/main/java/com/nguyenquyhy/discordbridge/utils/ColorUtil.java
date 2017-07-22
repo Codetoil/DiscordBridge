@@ -1,13 +1,16 @@
 package com.nguyenquyhy.discordbridge.utils;
 
+import com.google.common.collect.Lists;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ColorUtil {
+
     private static Map<Color, String> minecraftColors = new HashMap<>();
     private static Map<Color, TextColor> textColors = new HashMap<>();
 
@@ -48,7 +51,7 @@ public class ColorUtil {
     }
 
     public static String getColorCode(Color color) {
-        return minecraftColors.containsKey(color) ? minecraftColors.get(color) : "";
+        return minecraftColors.getOrDefault(color, "");
     }
 
     public static TextColor getColor(Color color) {
@@ -56,13 +59,21 @@ public class ColorUtil {
         double minDistance = 0;
         for (Color mcColor : textColors.keySet()) {
             double distance = (mcColor.getRed() - color.getRed()) * (mcColor.getRed() - color.getRed())
-                    + (mcColor.getGreen() - color.getGreen()) * (mcColor.getGreen() - color.getGreen())
-                    + (mcColor.getBlue() - color.getBlue()) * (mcColor.getBlue() - color.getBlue());
+                + (mcColor.getGreen() - color.getGreen()) * (mcColor.getGreen() - color.getGreen())
+                + (mcColor.getBlue() - color.getBlue()) * (mcColor.getBlue() - color.getBlue());
             if (result == null || minDistance > distance) {
                 result = textColors.get(mcColor);
                 minDistance = distance;
             }
         }
         return result;
+    }
+
+    public static String removeColor(String text) {
+        List<String> listColorCodes = Lists.newArrayList("&0", "&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&A", "&B", "&C", "&D", "&E", "&F", "&M", "&N", "&L", "&K", "&O");
+        for (String s : listColorCodes) {
+            text = text.replaceAll(s, "");
+        }
+        return text;
     }
 }

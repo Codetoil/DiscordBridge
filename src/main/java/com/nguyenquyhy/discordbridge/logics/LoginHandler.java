@@ -99,9 +99,9 @@ public class LoginHandler {
 
         try {
             HttpResponse<JsonNode> response = Unirest.post("https://discordapp.com/api/v6/auth/login")
-                    .header("content-type", "application/json")
-                    .body(new JSONObject().put("email", email).put("password", password))
-                    .asJson();
+                .header("content-type", "application/json")
+                .body(new JSONObject().put("email", email).put("password", password))
+                .asJson();
             if (response.getStatus() != 200) {
                 DiscordBridge.getInstance().getLogger().info("Auth response {} code with: {}", response.getStatus(), response.getBody());
                 commandSource.sendMessage(Text.of(TextColors.RED, "Wrong email or password!"));
@@ -134,9 +134,9 @@ public class LoginHandler {
         }
         try {
             HttpResponse<JsonNode> response = Unirest.post("https://discordapp.com/api/v6/auth/mfa/totp")
-                    .header("content-type", "application/json")
-                    .body(new JSONObject().put("code", String.format("%06d", code)).put("ticket", ticket))
-                    .asJson();
+                .header("content-type", "application/json")
+                .body(new JSONObject().put("code", String.format("%06d", code)).put("ticket", ticket))
+                .asJson();
             if (response.getStatus() != 200) {
                 commandSource.sendMessage(Text.of(TextColors.RED, "Wrong auth code! Retry with '/discord loginconfirm <email> <password>'"));
                 return CommandResult.empty();
@@ -190,7 +190,7 @@ public class LoginHandler {
             @Override
             public void onSuccess(@Nullable DiscordAPI discordAPI) {
                 client.registerListener((MessageCreateListener) (client, message)
-                        -> {
+                    -> {
                     MessageHandler.discordMessageReceived(message);
                 });
 
@@ -321,6 +321,8 @@ public class LoginHandler {
                 logger.info("Bot account has connected to Discord channel " + channelConfig.discordId + ".");
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
                     ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
+                    //TODO: Update description to use template
+                    //ChannelUtil.setDescription(channel, "Online - Number of Players: 0");
                 }
                 if (channelConfig.discord.publicChat != null) {
                     DiscordCommands.register(client, channel.getServer());
