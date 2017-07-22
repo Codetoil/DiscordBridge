@@ -2,10 +2,12 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import co.aikar.timings.Timings;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
+import com.nguyenquyhy.discordbridge.DiscordSource;
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
+import de.btobastian.javacord.entities.Server;
 import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.Role;
@@ -18,8 +20,11 @@ import org.spongepowered.api.text.Text;
 
 import java.util.Optional;
 
-public class TimingsCommand implements CommandExecutor {
-    private static DiscordBridge mod = DiscordBridge.getInstance();
+public class TimingsCommand extends DiscordCommand {
+
+    public TimingsCommand(Server server) {
+        super(mod.getCommandConfig().getDiscordCommands().getTimingsCommand(), server);
+    }
 
     @ConfigSerializable
     public static class Config extends CoreCommandConfig {
@@ -33,39 +38,19 @@ public class TimingsCommand implements CommandExecutor {
     }
 
     @Command(aliases = {"timings"}, description = "", usage = "")
-    public String onTimingsCommand(User user, Channel channel, Message command) {
-        Config config = mod.getCommandConfig().getDiscordCommands().getTimingsCommand();
+    public void onTimingsCommand(User user, Channel channel, Message command) {
 
-        // Check if the command is disabled
-        if (!config.isEnabled())
-            return null;
-        // Check if the command is allowed in this channel
-        if (config.getChannels().isEmpty() || !config.getChannels().contains(channel.getId())) // No channels set or channel is not enabled
-            return null;
-        // Check if the user has permission to use the command, if required
-        Optional<Role> role = TextUtil.getHighestRole(user, channel.getServer());
-        String roleId = (role.isPresent()) ? role.get().getId() : "everyone";
-        String roleName = (role.isPresent()) ? role.get().getName().toLowerCase() : "everyone";
-        if (config.getRoles().isEmpty()
-                || !config.getRoles().contains(roleId)
-                && config.getRoles().stream().noneMatch(r -> r.equalsIgnoreCase("everyone"))
-                && config.getRoles().stream().noneMatch(r -> r.equalsIgnoreCase(roleName)))
-            return null;
+        if (!isEnabled() || !isSupportedChannel(channel) || !hasPermission(user))
+            return;
+
+        TimingsCommand.Config config = (Config) this.config;
+
         // Delete the command message
         command.delete();
 
-        if (!Timings.isTimingsEnabled())
-            return null;
-
-        Sponge.getScheduler().createTaskBuilder().execute(src -> Timings.generateReport(mod.getCommandSource())).submit(mod);
-        String message = "";
-        for (Text text : mod.getCommandSource().getMessages()) {
-            message += text.toPlain() + "\n";
-        }
-
-        if (!config.directMessage)
-            return ChannelUtil.SPECIAL_CHAR + message;
-        user.sendMessage(message);
-        return null;
+        if (Timings.isTimingsEnabled())
+            Sponge.getScheduler().createTaskBuilder().execute(src -> Timings.generateReport(new DiscordSource(user, channel, config.directMessage))).submit(mod);
+        else
+            ChannelUtil.sendMessage(channel, "Timings are not enabled on this server!");
     }
 }

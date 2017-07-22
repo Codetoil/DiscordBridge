@@ -1,9 +1,6 @@
 package com.nguyenquyhy.discordbridge.models.command;
 
-import com.nguyenquyhy.discordbridge.commands.discord.OnlineCommand;
-import com.nguyenquyhy.discordbridge.commands.discord.ReloadCommand;
-import com.nguyenquyhy.discordbridge.commands.discord.TimingsCommand;
-import com.nguyenquyhy.discordbridge.commands.discord.TpsCommand;
+import com.nguyenquyhy.discordbridge.commands.discord.*;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -11,6 +8,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class DiscordCommandConfig {
     @Setting(value = "online")
     private OnlineCommand.Config onlineCommand;
+    @Setting(value = "purge")
+    private PurgeCommand.Config purgeCommand;
     @Setting(value = "reload")
     private ReloadCommand.Config reloadCommand;
     @Setting(value = "tps")
@@ -20,13 +19,18 @@ public class DiscordCommandConfig {
 
     public DiscordCommandConfig() {
         onlineCommand = new OnlineCommand.Config();
+        purgeCommand = new PurgeCommand.Config();
         reloadCommand = new ReloadCommand.Config();
         tpsCommand = new TpsCommand.Config();
-//        timingsCommand = new TimingsCommand.Config();
+        timingsCommand = new TimingsCommand.Config();
     }
 
     public OnlineCommand.Config getOnlineCommand() {
         return onlineCommand;
+    }
+
+    public PurgeCommand.Config getPurgeCommand() {
+        return purgeCommand;
     }
 
     public ReloadCommand.Config getReloadCommand() {

@@ -5,6 +5,7 @@ import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.Channel;
+import de.btobastian.javacord.entities.Server;
 import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.Role;
@@ -15,10 +16,13 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.Optional;
 
-public class TpsCommand implements CommandExecutor {
-    private static DiscordBridge mod = DiscordBridge.getInstance();
+public class TpsCommand extends DiscordCommand {
 
     private static String template = "`%s TPS`";
+
+    public TpsCommand(Server server) {
+        super(mod.getCommandConfig().getDiscordCommands().getTpsCommand(), server);
+    }
 
     @ConfigSerializable
     public static class Config extends CoreCommandConfig {
@@ -32,28 +36,16 @@ public class TpsCommand implements CommandExecutor {
     }
 
     @Command(aliases = {"tps"}, description = "", usage = "")
-    public String onTpsCommand(User user, Channel channel, Message command) {
-        Config config = mod.getCommandConfig().getDiscordCommands().getTpsCommand();
+    public void onTpsCommand(User user, Channel channel, Message command) {
 
-        // Check if the command is disabled
-        if (!config.isEnabled())
-            return null;
-        // Check if the command is allowed in this channel
-        if (config.getChannels().isEmpty() || !config.getChannels().contains(channel.getId())) // No channels set or channel is not enabled
-            return null;
-        // Check if the user has permission to use the command, if required
-        Optional<Role> role = TextUtil.getHighestRole(user, channel.getServer());
-        String roleId = (role.isPresent()) ? role.get().getId() : "everyone";
-        String roleName = (role.isPresent()) ? role.get().getName().toLowerCase() : "everyone";
-        if (config.getRoles().isEmpty()
-                || !config.getRoles().contains(roleId)
-                && config.getRoles().stream().noneMatch(r -> r.equalsIgnoreCase("everyone"))
-                && config.getRoles().stream().noneMatch(r -> r.equalsIgnoreCase(roleName)))
-            return null;
+        if (!isEnabled() || !isSupportedChannel(channel) || !hasPermission(user))
+            return;
+
+        TpsCommand.Config config = (Config) this.config;
+
         // Delete the command message
         command.delete();
 
-
-        return ChannelUtil.SPECIAL_CHAR + String.format(config.template, mod.getGame().getServer().getTicksPerSecond());
+        ChannelUtil.sendMessage(channel, String.format(config.template, mod.getGame().getServer().getTicksPerSecond()));
     }
 }

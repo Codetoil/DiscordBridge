@@ -37,7 +37,7 @@ import java.util.*;
 /**
  * Created by Hy on 1/4/2016.
  */
-@Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.3.0",
+@Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.4.2",
         description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy", "Mohron"})
 public class DiscordBridge {
 
@@ -63,7 +63,6 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
-    private static DiscordSource commandSource = new DiscordSource();
 
     @Listener
     public void onPreInitialization(GamePreInitializationEvent event) throws IOException, ObjectMappingException {
@@ -117,10 +116,6 @@ public class DiscordBridge {
 
     public static DiscordBridge getInstance() {
         return instance;
-    }
-
-    public DiscordSource getCommandSource() {
-        return commandSource;
     }
 
     public Game getGame() {

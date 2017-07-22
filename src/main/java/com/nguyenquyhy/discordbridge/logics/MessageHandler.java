@@ -43,13 +43,17 @@ public class MessageHandler {
             if (config.ignoreBots && message.getAuthor().isBot()) {
                 return;
             }
-            if (message.getNonce() != null && message.getNonce().equals(ChannelUtil.SPECIAL_CHAR + ChannelUtil.BOT_RANDOM)) {
+            if (message.getNonce() != null && message.getNonce().equals(ChannelUtil.getNonce())) {
                 return;
             }
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && message.getChannelReceiver() != null
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
+
+                if (message.isPinned()) {
+                    return;
+                }
 
                 // Role base configuration
                 ChannelMinecraftConfigCore minecraftConfig = channelConfig.minecraft;

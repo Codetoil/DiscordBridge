@@ -322,7 +322,9 @@ public class LoginHandler {
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
                     ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
                 }
-                DiscordCommands.register(client);
+                if (channelConfig.discord.publicChat != null) {
+                    DiscordCommands.register(client, channel.getServer());
+                }
             }
         }
     }

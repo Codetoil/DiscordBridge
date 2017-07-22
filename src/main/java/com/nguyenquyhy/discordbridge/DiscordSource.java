@@ -3,8 +3,13 @@ package com.nguyenquyhy.discordbridge;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
+import de.btobastian.javacord.entities.Channel;
+import de.btobastian.javacord.entities.User;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.service.context.Context;
+import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.service.permission.SubjectCollection;
 import org.spongepowered.api.service.permission.SubjectData;
@@ -17,7 +22,17 @@ import java.util.Optional;
 import java.util.Set;
 
 public class DiscordSource implements CommandSource {
-    private List<Text> messages = Lists.newArrayList();
+
+    private User user;
+    private Channel channel;
+    private boolean dm;
+
+    // For text channel messages
+    public DiscordSource(User user, Channel channel, boolean dm) {
+        this.user = user;
+        this.channel = channel;
+        this.dm = dm;
+    }
 
     @Override
     public String getName() {
@@ -25,13 +40,18 @@ public class DiscordSource implements CommandSource {
     }
 
     @Override
+    public String getIdentifier() {
+        return "discordbridge";
+    }
+
+    @Override
     public Optional<CommandSource> getCommandSource() {
-        return Optional.empty();
+        return Optional.of(this);
     }
 
     @Override
     public SubjectCollection getContainingCollection() {
-        return null;
+        return Sponge.getGame().getServiceManager().provideUnchecked(PermissionService.class).getGroupSubjects();
     }
 
     @Override
@@ -65,31 +85,17 @@ public class DiscordSource implements CommandSource {
     }
 
     @Override
-    public String getIdentifier() {
-        return "discordbridge";
-    }
-
-    @Override
     public Set<Context> getActiveContexts() {
         return ImmutableSet.of();
     }
 
     @Override
     public void sendMessage(Text message) {
-        messages.add(message);
-    }
-
-    public List<Text> getMessages() {
-        List<Text> m = messages;
-        messages.clear();
-        return m;
-    }
-
-    public Text getLastMessage() {
-        if(messages.isEmpty()) return Text.EMPTY;
-        Text message = messages.get(messages.size());
-        messages.remove(message);
-        return message;
+        if (dm) {
+            user.sendMessage(message.toPlain());
+        } else {
+            ChannelUtil.sendMessage(channel, message.toPlain());
+        }
     }
 
     @Override
