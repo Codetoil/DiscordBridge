@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.channel.MessageChannel;
 
@@ -37,7 +38,7 @@ public class ChatListener {
      * @param event
      */
     @Listener(order = Order.LATE)
-    public void onChat(MessageChannelEvent.Chat event) {
+    public void onChat(MessageChannelEvent.Chat event, @First Player player) {
 
         if (event.isMessageCancelled()) return;
 
@@ -58,58 +59,49 @@ public class ChatListener {
         if (StringUtils.isBlank(plainString) || plainString.startsWith("/")) return;
 
         plainString = TextUtil.formatMinecraftMessage(plainString);
-        Optional<Player> player = event.getCause().first(Player.class);
 
-        if (player.isPresent()) {
-            UUID playerId = player.get().getUniqueId();
+        UUID playerId = player.getUniqueId();
 
-            //Filters out fake player messages, such as CustomNPC messages. 
-            if (fakePlayerUUIDs.contains(playerId.toString())) return;
+        //Filters out fake player messages, such as CustomNPC messages.
+        if (fakePlayerUUIDs.contains(playerId.toString())) return;
 
-            DiscordAPI client = mod.getBotClient();
-            boolean isBotAccount = true;
-            if (mod.getHumanClients().containsKey(playerId)) {
-                client = mod.getHumanClients().get(playerId);
-                isBotAccount = false;
-            }
+        DiscordAPI client = mod.getBotClient();
+        boolean isBotAccount = true;
+        if (mod.getHumanClients().containsKey(playerId)) {
+            client = mod.getHumanClients().get(playerId);
+            isBotAccount = false;
+        }
 
-            if (client != null) {
-                for (ChannelConfig channelConfig : config.channels) {
-                    if (StringUtils.isNotBlank(channelConfig.discordId) && channelConfig.discord != null) {
-                        String template = null;
-                        if (!isStaffChat && channelConfig.discord.publicChat != null) {
-                            template = isBotAccount ? channelConfig.discord.publicChat.anonymousChatTemplate : channelConfig.discord.publicChat.authenticatedChatTemplate;
-                        } else if (isStaffChat && channelConfig.discord.staffChat != null) {
-                            template = isBotAccount ? channelConfig.discord.staffChat.anonymousChatTemplate : channelConfig.discord.staffChat.authenticatedChatTemplate;
+        if (client != null) {
+            for (ChannelConfig channelConfig : config.channels) {
+                if (StringUtils.isNotBlank(channelConfig.discordId) && channelConfig.discord != null) {
+                    String template = null;
+                    if (!isStaffChat && channelConfig.discord.publicChat != null) {
+                        template = isBotAccount ? channelConfig.discord.publicChat.anonymousChatTemplate : channelConfig.discord.publicChat.authenticatedChatTemplate;
+                    } else if (isStaffChat && channelConfig.discord.staffChat != null) {
+                        template = isBotAccount ? channelConfig.discord.staffChat.anonymousChatTemplate : channelConfig.discord.staffChat.authenticatedChatTemplate;
+                    }
+
+                    if (StringUtils.isNotBlank(template)) {
+                        Channel channel = client.getChannelById(channelConfig.discordId);
+
+                        if (channel == null) {
+                            ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
+                            return;
                         }
 
-                        if (StringUtils.isNotBlank(template)) {
-                            Channel channel = client.getChannelById(channelConfig.discordId);
+                        // Format Mentions for Discord
+                        plainString = TextUtil.formatMinecraftMention(plainString, channel.getServer(), player, isBotAccount);
 
-                            if (channel == null) {
-                                ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
-                                return;
-                            }
-
-                            // Format Mentions for Discord
-                            plainString = TextUtil.formatMinecraftMention(plainString, channel.getServer(), player.get(), isBotAccount);
-
-                            if (isBotAccount) {
-//                                if (channel == null) {
-//                                    LoginHandler.loginBotAccount();
-//                                }
-                                String content = String.format(template.replace(
-                                    "%a",
-                                    TextUtil.escapeForDiscord(player.get().getName(), template, "%a")),
-                                    plainString
-                                );
-                                ChannelUtil.sendMessage(channel, content);
-                            } else {
-//                                if (channel == null) {
-//                                    LoginHandler.loginHumanAccount(player.get());
-//                                }
-                                ChannelUtil.sendMessage(channel, String.format(template, plainString));
-                            }
+                        if (isBotAccount) {
+                            String content = String.format(template.replace(
+                                "%a",
+                                TextUtil.escapeForDiscord(player.getName(), template, "%a")),
+                                plainString
+                            );
+                            ChannelUtil.sendMessage(channel, content);
+                        } else {
+                            ChannelUtil.sendMessage(channel, String.format(template, plainString));
                         }
                     }
                 }
