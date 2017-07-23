@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-//    id 'org.spongepowered.plugin' version '0.6'
+    //id 'org.spongepowered.plugin' version '0.6'
     id "com.qixalite.spongestart" version "1.6.0"
     id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build'
 
 group = 'com.nguyenquyhy'
-version = '2.4.3'
+version = '2.4.4'
 description = 'A plugin to connect Discord and Minecraft'
 sourceCompatibility = 1.8
 
@@ -31,12 +31,13 @@ repositories {
 spongestart{
     eula true
     minecraft '1.10.2'
-    spongeForgeVersion '1.10.2-2281-5.2.0-BETA-2401'
+    type 'stable'
+    spongeForgeVersion '1.10.2-2281-5.2.0-BETA-2464'
+    forgeServerFolder 'run/'
 }
 
 dependencies {
     compile('org.spongepowered:spongeapi:5.1.0')
-    //compile('org.spongepowered:spongeapi:5.0.0')
     compile files('libs/javacord-2.0.14-shaded.jar')
     compile('de.btobastian.sdcf4j:sdcf4j-core:1.0.4')
     compile('de.btobastian.sdcf4j:sdcf4j-javacord:1.0.4')

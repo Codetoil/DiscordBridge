@@ -46,14 +46,16 @@ public class MessageHandler {
             if (message.getNonce() != null && message.getNonce().equals(ChannelUtil.getNonce())) {
                 return;
             }
+            if (mod.getCommandConfig().isEnabled() && message.getContent().startsWith(mod.getCommandConfig().getPrefix())) {
+                return;
+            }
+            if (message.isPinned()) {
+                return;
+            }
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && message.getChannelReceiver() != null
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
-
-                if (message.isPinned()) {
-                    return;
-                }
 
                 // Role base configuration
                 ChannelMinecraftConfigCore minecraftConfig = channelConfig.minecraft;
