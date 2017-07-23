@@ -29,34 +29,22 @@ public class ClientConnectionListener {
             DiscordBridge mod = DiscordBridge.getInstance();
             GlobalConfig config = mod.getConfig();
 
-            UUID playerId = player.getUniqueId();
-
-            boolean loggingIn = false;
-            if (!mod.getHumanClients().containsKey(playerId)) {
-                loggingIn = LoginHandler.loginHumanAccount(player);
-            }
-
-            if (!loggingIn && mod.getBotClient() != null) {
-                // Use Bot client to send joined message
-                for (ChannelConfig channelConfig : config.channels) {
-                    if (StringUtils.isNotBlank(channelConfig.discordId) && channelConfig.discord != null
-                        && StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
-                        Channel channel = mod.getBotClient().getChannelById(channelConfig.discordId);
-                        if (channel != null) {
-                            String content = String.format(channelConfig.discord.joinedTemplate, TextUtil
-                                .escapeForDiscord(player.getName(), channelConfig.discord.joinedTemplate, "%s"));
-                            ChannelUtil.sendMessage(channel, content);
-                        } else {
-                            ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
-                        }
-                        mod.updatePlayerCount(1);
-                        // TODO Update with template
-                        //  ChannelUtil.setDescription(channel, "Online - Number of Players: " + mod.getPlayerCount());
+            for (ChannelConfig channelConfig : config.channels) {
+                if (StringUtils.isNotBlank(channelConfig.discordId) && channelConfig.discord != null
+                    && StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
+                    Channel channel = mod.getBotClient().getChannelById(channelConfig.discordId);
+                    if (channel != null) {
+                        String content = String.format(channelConfig.discord.joinedTemplate, TextUtil
+                            .escapeForDiscord(player.getName(), channelConfig.discord.joinedTemplate, "%s"));
+                        ChannelUtil.sendMessage(channel, content);
+                    } else {
+                        ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
                     }
-
+                    mod.updatePlayerCount(1);
+                    // TODO Update with template
+                    //  ChannelUtil.setDescription(channel, "Online - Number of Players: " + mod.getPlayerCount());
                 }
             }
-
         }
     }
 
@@ -68,9 +56,7 @@ public class ClientConnectionListener {
 
             UUID playerId = player.getUniqueId();
 
-            DiscordAPI client = mod.getHumanClients().get(playerId);
-            if (client == null)
-                client = mod.getBotClient();
+            DiscordAPI client = mod.getBotClient();
             if (client != null) {
                 for (ChannelConfig channelConfig : config.channels) {
                     if (StringUtils.isNotBlank(channelConfig.discordId) && channelConfig.discord != null

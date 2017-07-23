@@ -14,6 +14,7 @@ import org.spongepowered.api.event.achievement.GrantAchievementEvent;
 import org.spongepowered.api.event.filter.Getter;
 
 public class AchievementListener {
+
     @Listener
     public void onAchievement(GrantAchievementEvent.TargetPlayer event, @Getter("getTargetEntity") Player player) {
 

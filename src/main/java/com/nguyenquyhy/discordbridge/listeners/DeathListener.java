@@ -13,6 +13,7 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DestructEntityEvent;
 
 public class DeathListener {
+
     @Listener
     public void onPlayerDeath(DestructEntityEvent.Death event) {
         DiscordBridge mod = DiscordBridge.getInstance();
