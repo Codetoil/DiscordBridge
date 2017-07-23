@@ -28,7 +28,9 @@ public abstract class DiscordCommand implements CommandExecutor {
     }
 
     protected boolean isSupportedChannel(Channel channel) {
-        return getChannels().isEmpty() || getChannels().contains(channel.getId());
+        return getChannels().isEmpty()
+            || getChannels().contains(channel.getId())
+            || getChannels().stream().anyMatch(c -> c.equalsIgnoreCase(channel.getName()));
     }
 
     private List<String> getChannels() {
