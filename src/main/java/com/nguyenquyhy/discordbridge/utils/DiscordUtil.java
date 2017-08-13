@@ -1,13 +1,16 @@
 package com.nguyenquyhy.discordbridge.utils;
 
 import com.google.common.collect.Lists;
+import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.ChannelMinecraftMentionConfig;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.Server;
 import de.btobastian.javacord.entities.User;
+import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.Role;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.util.TextUtils;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
@@ -15,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class DiscordUtil {
 
@@ -58,5 +62,14 @@ public class DiscordUtil {
             }
         }
         return Optional.empty();
+    }
+
+    public static void deleteMessageAfter(Message message, long delay, TimeUnit unit) {
+        if (delay < 0) return;
+        Sponge.getScheduler().createTaskBuilder()
+            .async()
+            .delay(delay, unit)
+            .execute(message::delete)
+            .submit(DiscordBridge.getInstance());
     }
 }

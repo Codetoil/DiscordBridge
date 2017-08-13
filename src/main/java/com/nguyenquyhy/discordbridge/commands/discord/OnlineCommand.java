@@ -2,6 +2,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
+import com.nguyenquyhy.discordbridge.utils.DiscordUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.Server;
 import de.btobastian.javacord.entities.User;
@@ -12,6 +13,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 public class OnlineCommand extends DiscordCommand {
 
@@ -53,7 +55,7 @@ public class OnlineCommand extends DiscordCommand {
         OnlineCommand.Config config = (Config) this.config;
 
         // Delete the command message
-        command.delete();
+        DiscordUtil.deleteMessageAfter(command, expiration, TimeUnit.SECONDS);
 
         Collection<Player> players = mod.getGame().getServer().getOnlinePlayers();
 
@@ -67,6 +69,6 @@ public class OnlineCommand extends DiscordCommand {
         }
         message += config.footerTemplate;
 
-        ChannelUtil.sendMessage(channel, message);
+        ChannelUtil.sendSelfDestructingMessage(channel, message, expiration, TimeUnit.SECONDS);
     }
 }

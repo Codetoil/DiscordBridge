@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Hy on 8/6/2016.
@@ -314,7 +315,7 @@ public class LoginHandler {
                 }
                 if (StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
                     String content = String.format(channelConfig.discord.joinedTemplate, playerName);
-                    ChannelUtil.sendMessage(channel, content);
+                    ChannelUtil.sendSelfDestructingMessage(channel, content, 15, TimeUnit.MINUTES);
                 }
                 logger.info(playerName + " connected to Discord channel " + channelConfig.discordId + ".");
             } else {

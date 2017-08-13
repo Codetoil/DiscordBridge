@@ -21,6 +21,7 @@ public class DiscordCommands {
         CommandHandler commandHandler = new JavacordHandler(api);
 
         commandHandler.setDefaultPrefix(config.getPrefix());
+        commandHandler.registerCommand(new ClearCommand(server));
         commandHandler.registerCommand(new OnlineCommand(server));
         commandHandler.registerCommand(new PurgeCommand(server));
         commandHandler.registerCommand(new ReloadCommand(server));

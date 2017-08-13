@@ -14,11 +14,13 @@ public abstract class DiscordCommand implements CommandExecutor {
 
     protected static final DiscordBridge mod = DiscordBridge.getInstance();
     protected final CoreCommandConfig config;
+    protected final int expiration;
     private final CommandConfig globalConfig;
     private Server server;
 
     protected DiscordCommand(CoreCommandConfig config, Server server) {
         this.globalConfig = mod.getCommandConfig();
+        this.expiration = globalConfig.getExpiration();
         this.config = config;
         this.server = server;
     }

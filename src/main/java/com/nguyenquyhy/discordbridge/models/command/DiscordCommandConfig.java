@@ -6,6 +6,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
 public class DiscordCommandConfig {
+    @Setting(value = "clear")
+    private ClearCommand.Config clearCommand;
     @Setting(value = "online")
     private OnlineCommand.Config onlineCommand;
     @Setting(value = "purge")
@@ -18,11 +20,16 @@ public class DiscordCommandConfig {
     private TimingsCommand.Config timingsCommand;
 
     public DiscordCommandConfig() {
+        clearCommand = new ClearCommand.Config();
         onlineCommand = new OnlineCommand.Config();
         purgeCommand = new PurgeCommand.Config();
         reloadCommand = new ReloadCommand.Config();
         tpsCommand = new TpsCommand.Config();
         timingsCommand = new TimingsCommand.Config();
+    }
+
+    public ClearCommand.Config getClearCommand() {
+        return clearCommand;
     }
 
     public OnlineCommand.Config getOnlineCommand() {

@@ -33,6 +33,7 @@ import org.spongepowered.api.text.format.TextColors;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Hy on 1/4/2016.
@@ -93,7 +94,7 @@ public class DiscordBridge {
                     && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
                     Channel channel = botClient.getChannelById(channelConfig.discordId);
                     if (channel != null) {
-                        ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
+                        ChannelUtil.sendSelfDestructingMessage(channel, channelConfig.discord.serverDownMessage, 15, TimeUnit.MINUTES);
                         // TODO Update with template
                         // ChannelUtil.setDescription(channel, "Offline");
                     } else {
