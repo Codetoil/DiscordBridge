@@ -38,8 +38,8 @@ public abstract class DiscordCommand implements CommandExecutor {
     }
 
     protected boolean hasPermission(User user) {
-        return getRoles().stream()
-            .anyMatch(r -> r.equalsIgnoreCase("everyone"))
+        return server.getOwnerId().equals(user.getId())
+            || getRoles().stream().anyMatch(r -> r.equalsIgnoreCase("everyone"))
             || user.getRoles(server).stream().anyMatch(userRole -> getRoles().contains(userRole.getId())
             || getRoles().stream().anyMatch(r -> r.equalsIgnoreCase(userRole.getName())));
     }
