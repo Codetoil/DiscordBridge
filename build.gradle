@@ -38,10 +38,10 @@ spongestart{
 
 dependencies {
     compile('org.spongepowered:spongeapi:5.1.0')
-    compile files('libs/javacord-2.0.14-shaded.jar')
+//    compile files('libs/javacord-2.0.14-shaded.jar')
     compile('de.btobastian.sdcf4j:sdcf4j-core:1.0.4')
     compile('de.btobastian.sdcf4j:sdcf4j-javacord:1.0.4')
-//    compile('de.btobastian.javacord:javacord:2.0.11:shaded')
+    compile('de.btobastian.javacord:javacord:2.0.15:shaded')
 //    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
 //    compile 'org.apache.httpcomponents:httpcore:4.3.2'
 //    compile 'org.apache.httpcomponents:httpclient:4.3.3'
@@ -62,6 +62,7 @@ shadowJar {
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')
         include dependency('org.apache.httpcomponents:httpclient')
+        include dependency('de.btobastian.javacord:javacord')
         include dependency('de.btobastian.sdcf4j:sdcf4j-core')
         include dependency('de.btobastian.sdcf4j:sdcf4j-javacord')
 //        include dependency('com.googlecode.json-simple:json-simple')
