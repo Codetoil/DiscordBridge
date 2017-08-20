@@ -12,6 +12,7 @@ import com.nguyenquyhy.discordbridge.logics.LoginHandler;
 import com.nguyenquyhy.discordbridge.config.ChannelConfig;
 import com.nguyenquyhy.discordbridge.config.GlobalConfig;
 import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
+import com.nguyenquyhy.discordbridge.registration.UserRegistrationService;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import de.btobastian.javacord.DiscordAPI;
@@ -46,6 +47,7 @@ public class DiscordBridge {
     private DiscordAPI consoleClient = null;
     private final Map<UUID, DiscordAPI> humanClients = new HashMap<>();
     private DiscordAPI botClient = null;
+    private UserRegistrationService registrationService;
 
     private final Set<UUID> unauthenticatedPlayers = new HashSet<>(100);
 
@@ -86,6 +88,7 @@ public class DiscordBridge {
     public void onServerStarting(GameStartingServerEvent event) {
         MinecraftCommands.register();
         LoginHandler.loginBotAccount();
+        registrationService = new UserRegistrationService();
     }
 
 
@@ -127,6 +130,10 @@ public class DiscordBridge {
 
     public static DiscordBridge getInstance() {
         return instance;
+    }
+
+    public UserRegistrationService getRegistrationService() {
+        return registrationService;
     }
 
     public Game getGame() {

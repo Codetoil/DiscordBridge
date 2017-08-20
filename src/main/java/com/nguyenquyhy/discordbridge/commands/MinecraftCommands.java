@@ -40,6 +40,13 @@ public class MinecraftCommands {
                 .executor(new ReloadCommand())
                 .build();
 
+        CommandSpec registerCmd = CommandSpec.builder()
+            .permission("discordbridge.register")
+            .description(Text.of("Register your Discord account to your MC user."))
+            .arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("code"))))
+            .executor(new RegisterCommand())
+            .build();
+
         CommandSpec reconnectCmd = CommandSpec.builder()
                 .permission("discordbridge.reconnect")
                 .description(Text.of("Reconnect Discord Bridge connection"))

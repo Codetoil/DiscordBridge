@@ -24,6 +24,7 @@ public class DiscordCommands {
         commandHandler.registerCommand(new ClearCommand(server));
         commandHandler.registerCommand(new OnlineCommand(server));
         commandHandler.registerCommand(new PurgeCommand(server));
+        commandHandler.registerCommand(new RegisterCommand(server));
         commandHandler.registerCommand(new ReloadCommand(server));
         commandHandler.registerCommand(new TpsCommand(server));
         commandHandler.registerCommand(new TimingsCommand(server));
