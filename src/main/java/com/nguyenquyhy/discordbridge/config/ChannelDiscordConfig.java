@@ -1,4 +1,4 @@
-package com.nguyenquyhy.discordbridge.models;
+package com.nguyenquyhy.discordbridge.config;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;

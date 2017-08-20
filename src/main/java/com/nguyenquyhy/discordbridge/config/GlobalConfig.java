@@ -1,4 +1,4 @@
-package com.nguyenquyhy.discordbridge.models;
+package com.nguyenquyhy.discordbridge.config;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -11,18 +11,6 @@ import java.util.List;
  */
 @ConfigSerializable
 public class GlobalConfig {
-    /**
-     * Configs initialized in constructor will be restored automatically if deleted.
-     */
-    public GlobalConfig() {
-        channels = new ArrayList<>();
-        tokenStore = TokenStore.JSON;
-        prefixBlacklist = new ArrayList<>();
-        ignoreBots = false;
-        botDiscordGame = "";
-        minecraftBroadcastTemplate = "&2<BROADCAST> %s";
-        botToken = "";
-    }
 
     @Setting
     public String botToken;
@@ -38,10 +26,29 @@ public class GlobalConfig {
     public String minecraftBroadcastTemplate;
     @Setting
     public List<ChannelConfig> channels;
+    @Setting
+    private RegistrationServiceConfig registrationService = new RegistrationServiceConfig();
+
+    /**
+     * Configs initialized in constructor will be restored automatically if deleted.
+     */
+    public GlobalConfig() {
+        channels = new ArrayList<>();
+        tokenStore = TokenStore.JSON;
+        prefixBlacklist = new ArrayList<>();
+        ignoreBots = false;
+        botDiscordGame = "";
+        minecraftBroadcastTemplate = "&2<BROADCAST> %s";
+        botToken = "";
+    }
 
     public void migrate() {
         if (channels != null) {
             channels.forEach(ChannelConfig::migrate);
         }
+    }
+
+    public RegistrationServiceConfig getRegistrationService() {
+        return registrationService;
     }
 }

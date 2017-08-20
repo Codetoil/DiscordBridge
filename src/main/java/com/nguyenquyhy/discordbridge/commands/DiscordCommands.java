@@ -2,7 +2,7 @@ package com.nguyenquyhy.discordbridge.commands;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.commands.discord.*;
-import com.nguyenquyhy.discordbridge.models.command.CommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.entities.Server;
 import de.btobastian.sdcf4j.CommandHandler;

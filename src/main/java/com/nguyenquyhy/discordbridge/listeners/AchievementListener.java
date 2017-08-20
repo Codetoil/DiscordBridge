@@ -1,8 +1,8 @@
 package com.nguyenquyhy.discordbridge.listeners;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.models.ChannelConfig;
-import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.config.ChannelConfig;
+import com.nguyenquyhy.discordbridge.config.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ConfigUtil;
 import de.btobastian.javacord.DiscordAPI;

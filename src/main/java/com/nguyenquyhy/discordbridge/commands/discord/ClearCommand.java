@@ -1,6 +1,6 @@
 package com.nguyenquyhy.discordbridge.commands.discord;
 
-import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.DiscordUtil;
 import de.btobastian.javacord.entities.Channel;
@@ -50,9 +50,9 @@ public class ClearCommand extends DiscordCommand {
         String[] history;
         try {
             if (config.clearPins) {
-                history = channel.getMessageHistory(100).get().getMessagesSorted().stream().map(Message::getId).toArray(String[]::new);
-            }else {
-                history = channel.getMessageHistory(100).get().getMessagesSorted().stream().filter(m -> !m.isPinned()).map(Message::getId).toArray(String[]::new);
+                history = channel.getMessageHistoryBefore(command, 100).get().getMessagesSorted().stream().map(Message::getId).toArray(String[]::new);
+            } else {
+                history = channel.getMessageHistoryBefore(command, 100).get().getMessagesSorted().stream().filter(m -> !m.isPinned()).map(Message::getId).toArray(String[]::new);
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

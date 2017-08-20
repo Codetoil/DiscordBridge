@@ -1,7 +1,7 @@
 package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.google.common.collect.Lists;
-import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.DiscordUtil;
 import de.btobastian.javacord.entities.Channel;
@@ -12,7 +12,6 @@ import de.btobastian.sdcf4j.Command;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +51,7 @@ public class PurgeCommand extends DiscordCommand {
 
         List<Message> history;
         try {
-            history = Lists.reverse(channel.getMessageHistory(config.maxHistory).get().getMessagesSorted());
+            history = Lists.reverse(channel.getMessageHistoryBefore(command, config.maxHistory).get().getMessagesSorted());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return;

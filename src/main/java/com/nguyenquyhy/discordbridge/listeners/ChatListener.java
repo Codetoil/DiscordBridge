@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.hooks.Boop;
 import com.nguyenquyhy.discordbridge.hooks.Nucleus;
-import com.nguyenquyhy.discordbridge.models.ChannelConfig;
-import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.config.ChannelConfig;
+import com.nguyenquyhy.discordbridge.config.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
@@ -20,7 +20,6 @@ import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.channel.MessageChannel;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,7 +36,7 @@ public class ChatListener {
      *
      * @param event
      */
-    @Listener(order = Order.LATE)
+    @Listener(order = Order.POST)
     public void onChat(MessageChannelEvent.Chat event, @First Player player) {
 
         if (event.isMessageCancelled()) return;
@@ -55,7 +54,7 @@ public class ChatListener {
                 return; // Ignore all other types
         }
 
-        String plainString = event.getRawMessage().toPlain().trim();
+        String plainString = event.getMessage().toPlain().trim();
         if (StringUtils.isBlank(plainString) || plainString.startsWith("/")) return;
 
         plainString = TextUtil.formatMinecraftMessage(plainString);

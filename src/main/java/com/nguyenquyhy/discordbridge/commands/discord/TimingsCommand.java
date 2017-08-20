@@ -2,7 +2,7 @@ package com.nguyenquyhy.discordbridge.commands.discord;
 
 import co.aikar.timings.Timings;
 import com.nguyenquyhy.discordbridge.DiscordSource;
-import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CoreCommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.DiscordUtil;
 import de.btobastian.javacord.entities.Channel;

@@ -1,8 +1,8 @@
 package com.nguyenquyhy.discordbridge.commands.discord;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.models.command.CommandConfig;
-import com.nguyenquyhy.discordbridge.models.command.CoreCommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
+import com.nguyenquyhy.discordbridge.config.command.CoreCommandConfig;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.Server;
 import de.btobastian.javacord.entities.User;
@@ -15,7 +15,7 @@ public abstract class DiscordCommand implements CommandExecutor {
     protected static final DiscordBridge mod = DiscordBridge.getInstance();
     protected final CoreCommandConfig config;
     protected final int expiration;
-    private final CommandConfig globalConfig;
+    protected final CommandConfig globalConfig;
     private Server server;
 
     protected DiscordCommand(CoreCommandConfig config, Server server) {

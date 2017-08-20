@@ -1,4 +1,4 @@
-package com.nguyenquyhy.discordbridge.models;
+package com.nguyenquyhy.discordbridge.config;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -7,8 +7,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
  * Created by Hy on 12/11/2016.
  */
 @ConfigSerializable
-public class ChannelMinecraftAttachmentConfig implements IConfigInheritable<ChannelMinecraftAttachmentConfig> {
-    public ChannelMinecraftAttachmentConfig() {
+public class ChannelMinecraftEmojiConfig implements IConfigInheritable<ChannelMinecraftEmojiConfig> {
+    public ChannelMinecraftEmojiConfig() {
 
     }
 
@@ -16,8 +16,8 @@ public class ChannelMinecraftAttachmentConfig implements IConfigInheritable<Chan
      * This is called only when the config file is first created.
      */
     void initializeDefault() {
-        template = "&3[Attachment]&r";
-        hoverTemplate = "Click to open attachment.";
+        template = "&b:%n:&r";
+        hoverTemplate = "Click to view emjoi.";
         allowLink = true;
     }
 
@@ -29,7 +29,7 @@ public class ChannelMinecraftAttachmentConfig implements IConfigInheritable<Chan
     public Boolean allowLink;
 
     @Override
-    public void inherit(ChannelMinecraftAttachmentConfig parent) {
+    public void inherit(ChannelMinecraftEmojiConfig parent) {
         if (template == null) template = parent.template;
         if (hoverTemplate == null) hoverTemplate = parent.hoverTemplate;
         if (allowLink == null) allowLink = parent.allowLink;

@@ -9,9 +9,9 @@ import com.nguyenquyhy.discordbridge.listeners.ClientConnectionListener;
 import com.nguyenquyhy.discordbridge.listeners.DeathListener;
 import com.nguyenquyhy.discordbridge.logics.ConfigHandler;
 import com.nguyenquyhy.discordbridge.logics.LoginHandler;
-import com.nguyenquyhy.discordbridge.models.ChannelConfig;
-import com.nguyenquyhy.discordbridge.models.GlobalConfig;
-import com.nguyenquyhy.discordbridge.models.command.CommandConfig;
+import com.nguyenquyhy.discordbridge.config.ChannelConfig;
+import com.nguyenquyhy.discordbridge.config.GlobalConfig;
+import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import de.btobastian.javacord.DiscordAPI;
@@ -27,6 +27,7 @@ import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -60,6 +61,9 @@ public class DiscordBridge {
 
     @Inject
     private Game game;
+
+    @Inject
+    private PluginContainer pluginContainer;
 
     private IStorage storage;
 

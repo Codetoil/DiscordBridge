@@ -1,9 +1,9 @@
 package com.nguyenquyhy.discordbridge.logics;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.models.ChannelConfig;
-import com.nguyenquyhy.discordbridge.models.ChannelMinecraftConfigCore;
-import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.config.ChannelConfig;
+import com.nguyenquyhy.discordbridge.config.ChannelMinecraftConfigCore;
+import com.nguyenquyhy.discordbridge.config.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.message.Message;
