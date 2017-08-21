@@ -54,7 +54,7 @@ public class ChatListener {
                 return; // Ignore all other types
         }
 
-        String plainString = event.getMessage().toPlain().trim();
+        String plainString = event.getFormatter().getBody().format().toPlain();
         if (StringUtils.isBlank(plainString) || plainString.startsWith("/")) return;
 
         plainString = TextUtil.formatMinecraftMessage(plainString);
