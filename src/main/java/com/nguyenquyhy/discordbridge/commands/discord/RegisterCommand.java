@@ -27,7 +27,7 @@ public class RegisterCommand extends DiscordCommand {
     private static String alreadyRegistered = "%s is already registered!";
 
     public RegisterCommand(Server server) {
-        super(mod.getCommandConfig().getDiscordCommands().getTpsCommand(), server);
+        super(mod.getCommandConfig().getDiscordCommands().getRegisterCommand(), server);
     }
 
     @ConfigSerializable

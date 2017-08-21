@@ -7,26 +7,19 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class DiscordCommandConfig {
     @Setting(value = "clear")
-    private ClearCommand.Config clearCommand;
+    private ClearCommand.Config clearCommand = new ClearCommand.Config();
     @Setting(value = "online")
-    private OnlineCommand.Config onlineCommand;
+    private OnlineCommand.Config onlineCommand = new OnlineCommand.Config();
     @Setting(value = "purge")
-    private PurgeCommand.Config purgeCommand;
+    private PurgeCommand.Config purgeCommand= new PurgeCommand.Config();
     @Setting(value = "reload")
-    private ReloadCommand.Config reloadCommand;
+    private ReloadCommand.Config reloadCommand = new ReloadCommand.Config();
+    @Setting(value = "register")
+    private RegisterCommand.Config registerCommand = new RegisterCommand.Config();
     @Setting(value = "tps")
-    private TpsCommand.Config tpsCommand;
+    private TpsCommand.Config tpsCommand = new TpsCommand.Config();
     @Setting(value = "timings")
-    private TimingsCommand.Config timingsCommand;
-
-    public DiscordCommandConfig() {
-        clearCommand = new ClearCommand.Config();
-        onlineCommand = new OnlineCommand.Config();
-        purgeCommand = new PurgeCommand.Config();
-        reloadCommand = new ReloadCommand.Config();
-        tpsCommand = new TpsCommand.Config();
-        timingsCommand = new TimingsCommand.Config();
-    }
+    private TimingsCommand.Config timingsCommand = new TimingsCommand.Config();
 
     public ClearCommand.Config getClearCommand() {
         return clearCommand;
@@ -38,6 +31,10 @@ public class DiscordCommandConfig {
 
     public PurgeCommand.Config getPurgeCommand() {
         return purgeCommand;
+    }
+
+    public RegisterCommand.Config getRegisterCommand() {
+        return registerCommand;
     }
 
     public ReloadCommand.Config getReloadCommand() {
