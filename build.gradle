@@ -1,80 +1,72 @@
 plugins {
-    id 'java'
-    //id 'org.spongepowered.plugin' version '0.6'
+    id "java"
     id "com.qixalite.spongestart" version "1.6.0"
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
+    id "com.github.johnrengelman.shadow" version "1.2.3"
 }
 
-defaultTasks 'build'
+defaultTasks "build"
 
-group = 'com.nguyenquyhy'
-version = '2.5.0'
-description = 'A plugin to connect Discord and Minecraft'
-sourceCompatibility = 1.8
+group = "com.nguyenquyhy"
+version = "${major}.${minor}.${patch}-${api}"
+description = "A plugin to connect Discord and Minecraft"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
 
 repositories {
     mavenCentral()
     maven {
-        name 'Sonatype'
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        name "Sonatype"
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
     maven {
-        name 'sponge'
-        url 'http://repo.spongepowered.org/maven'
+        name "sponge"
+        url "http://repo.spongepowered.org/maven"
     }
     maven {
-        name 'javacord-repo'
-        url 'http://repo.bastian-oppermann.de'
+        name "javacord-repo"
+        url "http://repo.bastian-oppermann.de"
     }
     maven {
-        name 'jitpack.io'
-        url 'https://jitpack.io'
+        name "jitpack.io"
+        url "https://jitpack.io"
     }
 }
 
-spongestart {
+spongestart{
     eula true
-    minecraft '1.10.2'
-    type 'stable'
-    spongeForgeVersion '1.10.2-2281-5.2.0-BETA-2464'
-    forgeServerFolder 'run/'
+    minecraft "1.12.1"
+    type "experimental"
+    spongeForgeVersion properties.spongeforge
+    forgeServerFolder "run/API7/"
 }
 
 dependencies {
-    compile('org.spongepowered:spongeapi:5.1.0')
-//    compile files('libs/javacord-2.0.14-shaded.jar')
-    compile('de.btobastian.javacord:javacord:2.0.15:shaded')
-    compile('de.btobastian.sdcf4j:sdcf4j-core:1.0.5')
-    compile('de.btobastian.sdcf4j:sdcf4j-javacord:1.0.5')
-//    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
-//    compile 'org.apache.httpcomponents:httpcore:4.3.2'
-//    compile 'org.apache.httpcomponents:httpclient:4.3.3'
-//    compile 'org.java-websocket:Java-WebSocket:1.3.0'
-//    compile 'com.googlecode.json-simple:json-simple:1.1.1'
-//    compile 'net.jodah:typetools:0.4.3'
+    compile("org.spongepowered:spongeapi:${spongeapi}")
+    compile("de.btobastian.javacord:javacord:2.0.15:shaded")
+    compile("de.btobastian.sdcf4j:sdcf4j-core:1.0.5")
+    compile("de.btobastian.sdcf4j:sdcf4j-javacord:1.0.5")
 }
 
 task fatJar(type: Jar) {
-    baseName = project.name + '-all'
+    baseName = project.name + "-all"
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 
 shadowJar {
     dependencies {
-        include dependency('commons-logging:commons-logging')
-        include dependency('org.apache.commons:commons-lang3')
-        include dependency('org.apache.httpcomponents:httpcore')
-        include dependency('org.apache.httpcomponents:httpclient')
-        include dependency('de.btobastian.javacord:javacord')
-        include dependency('de.btobastian.sdcf4j:sdcf4j-core')
-        include dependency('de.btobastian.sdcf4j:sdcf4j-javacord')
-//        include dependency('com.googlecode.json-simple:json-simple')
-//        include dependency('org.java-websocket:Java-WebSocket')
-//        include dependency('net.jodah:typetools')
+        include dependency("commons-logging:commons-logging")
+        include dependency("org.apache.commons:commons-lang3")
+        include dependency("org.apache.httpcomponents:httpcore")
+        include dependency("org.apache.httpcomponents:httpclient")
+        include dependency("de.btobastian.javacord:javacord")
+        include dependency("de.btobastian.sdcf4j:sdcf4j-core")
+        include dependency("de.btobastian.sdcf4j:sdcf4j-javacord")
 
-        relocate 'org.apache.http', 'shaded.apache.http'
-        relocate 'org.apache.commons', 'shaded.apache.commons'
+        relocate "org.apache.http", "shaded.apache.http"
+        relocate "org.apache.commons", "shaded.apache.commons"
     }
 }
 
