@@ -18,6 +18,7 @@
         "leftTemplate": "_%s just left the server_",
         "serverUpMessage": "Server has started.",
         "serverDownMessage": "Server has stopped.",
+        "firstJoinTemplate": "_Welcome **%a** to the server!_",
         "broadcastTemplate": "_<BROADCAST> %s_",
         "deathTemplate": "**%s**"
       },
@@ -26,6 +27,11 @@
         "attachment": {
           "template": "&3[Attachment]",
           "hoverTemplate": "Click to open attachment.",
+          "allowLink": true
+        },
+        "emoji": {
+          "template": "&b:%n:&r",
+          "hoverTemplate": "Click to view emjoi.",
           "allowLink": true
         },
         "mention": {

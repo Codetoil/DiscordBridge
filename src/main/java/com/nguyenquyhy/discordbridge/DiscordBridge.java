@@ -2,16 +2,17 @@ package com.nguyenquyhy.discordbridge;
 
 import com.google.inject.Inject;
 import com.nguyenquyhy.discordbridge.commands.MinecraftCommands;
+import com.nguyenquyhy.discordbridge.config.ChannelConfig;
+import com.nguyenquyhy.discordbridge.config.GlobalConfig;
+import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
 import com.nguyenquyhy.discordbridge.database.IStorage;
 import com.nguyenquyhy.discordbridge.listeners.AchievementListener;
 import com.nguyenquyhy.discordbridge.listeners.ChatListener;
 import com.nguyenquyhy.discordbridge.listeners.ClientConnectionListener;
 import com.nguyenquyhy.discordbridge.listeners.DeathListener;
+import com.nguyenquyhy.discordbridge.listeners.FirstJoinListener;
 import com.nguyenquyhy.discordbridge.logics.ConfigHandler;
 import com.nguyenquyhy.discordbridge.logics.LoginHandler;
-import com.nguyenquyhy.discordbridge.config.ChannelConfig;
-import com.nguyenquyhy.discordbridge.config.GlobalConfig;
-import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
 import com.nguyenquyhy.discordbridge.registration.UserRegistrationService;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
@@ -24,6 +25,7 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -40,8 +42,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Hy on 1/4/2016.
  */
-@Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.4.2",
-    description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy", "Mohron"})
+@Plugin(
+    id = "discordbridge",
+    name = "Discord Bridge",
+    version = "2.5.0",
+    description = "A Sponge plugin to connect your Minecraft server with Discord",
+    authors = {"Hy", "Mohron"}
+)
 public class DiscordBridge {
 
     private DiscordAPI consoleClient = null;
@@ -77,11 +84,18 @@ public class DiscordBridge {
         instance = this;
         config = ConfigHandler.loadConfiguration();
         commandConfig = ConfigHandler.loadCommandConfiguration();
+    }
 
+    @Listener
+    public void onPostInitialization(GamePostInitializationEvent event) {
         Sponge.getEventManager().registerListeners(this, new ChatListener());
         Sponge.getEventManager().registerListeners(this, new ClientConnectionListener());
         Sponge.getEventManager().registerListeners(this, new AchievementListener());
         Sponge.getEventManager().registerListeners(this, new DeathListener());
+
+        if (Sponge.getPluginManager().isLoaded("nucleus")) {
+            Sponge.getEventManager().registerListeners(this, new FirstJoinListener());
+        }
     }
 
     @Listener

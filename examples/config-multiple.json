@@ -23,6 +23,11 @@
           "hoverTemplate": "Please check Discord.",
           "allowLink": false
         },
+        "emoji": {
+          "template": "&b:%n:&r",
+          "hoverTemplate": "Click to view emjoi.",
+          "allowLink": true
+        },
         "mention": {
           "userTemplate": "@%s",
           "roleTemplate": "@%s",
@@ -47,6 +52,7 @@
         "leftTemplate": "_%s just left the server_",
         "serverUpMessage": "Server has started.",
         "serverDownMessage": "Server has stopped.",
+        "firstJoinTemplate": "_Welcome **%a** to the server!_",
         "deathTemplate": "**%s**"
       }
     },

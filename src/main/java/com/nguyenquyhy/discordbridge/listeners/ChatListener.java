@@ -2,10 +2,10 @@ package com.nguyenquyhy.discordbridge.listeners;
 
 import com.google.common.collect.Lists;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.hooks.Boop;
-import com.nguyenquyhy.discordbridge.hooks.Nucleus;
 import com.nguyenquyhy.discordbridge.config.ChannelConfig;
 import com.nguyenquyhy.discordbridge.config.GlobalConfig;
+import com.nguyenquyhy.discordbridge.hooks.Boop;
+import com.nguyenquyhy.discordbridge.hooks.Nucleus;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
@@ -56,6 +56,9 @@ public class ChatListener {
 
         String plainString = event.getFormatter().getBody().format().toPlain();
         if (StringUtils.isBlank(plainString) || plainString.startsWith("/")) return;
+
+        // Replace with processed message body - Allows token processing to occur
+        plainString = event.getFormatter().getBody().toText().toPlain().trim();
 
         plainString = TextUtil.formatMinecraftMessage(plainString);
 

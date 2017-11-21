@@ -1,7 +1,6 @@
 plugins {
     id 'java'
-    //id 'org.spongepowered.plugin' version '0.6'
-    id "com.qixalite.spongestart" version "1.6.0"
+    id 'com.qixalite.spongestart2' version '3.0.1'
     id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
 
@@ -30,48 +29,36 @@ repositories {
         name 'jitpack.io'
         url 'https://jitpack.io'
     }
+    maven {
+        name = "Nucleus"
+        url = "http://repo.drnaylor.co.uk/artifactory/list/minecraft"
+    }
 }
 
 spongestart {
-    eula true
-    minecraft '1.10.2'
-    type 'stable'
-    spongeForgeVersion '1.10.2-2281-5.2.0-BETA-2464'
-    forgeServerFolder 'run/'
+    online 'false'
+    minecraft "1.10.2"
+    type "stable"
+    spongeForge "1.10.2-2477-5.2.0-BETA-2731"
 }
 
 dependencies {
-    compile('org.spongepowered:spongeapi:5.1.0')
-//    compile files('libs/javacord-2.0.14-shaded.jar')
-    compile('de.btobastian.javacord:javacord:2.0.15:shaded')
+    compile("org.spongepowered:spongeapi:${spongeapi}")
+    compile("de.btobastian.javacord:javacord:${javacord}:shaded")
+    compile("io.github.nucleuspowered:nucleus-api:${nucleus}")
     compile('de.btobastian.sdcf4j:sdcf4j-core:1.0.5')
     compile('de.btobastian.sdcf4j:sdcf4j-javacord:1.0.5')
-//    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
-//    compile 'org.apache.httpcomponents:httpcore:4.3.2'
-//    compile 'org.apache.httpcomponents:httpclient:4.3.3'
-//    compile 'org.java-websocket:Java-WebSocket:1.3.0'
-//    compile 'com.googlecode.json-simple:json-simple:1.1.1'
-//    compile 'net.jodah:typetools:0.4.3'
-}
-
-task fatJar(type: Jar) {
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }
 
 shadowJar {
     dependencies {
+        include dependency('de.btobastian.javacord:javacord')
         include dependency('commons-logging:commons-logging')
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')
         include dependency('org.apache.httpcomponents:httpclient')
-        include dependency('de.btobastian.javacord:javacord')
         include dependency('de.btobastian.sdcf4j:sdcf4j-core')
         include dependency('de.btobastian.sdcf4j:sdcf4j-javacord')
-//        include dependency('com.googlecode.json-simple:json-simple')
-//        include dependency('org.java-websocket:Java-WebSocket')
-//        include dependency('net.jodah:typetools')
 
         relocate 'org.apache.http', 'shaded.apache.http'
         relocate 'org.apache.commons', 'shaded.apache.commons'

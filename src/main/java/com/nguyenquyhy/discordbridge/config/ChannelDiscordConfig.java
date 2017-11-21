@@ -23,6 +23,7 @@ public class ChannelDiscordConfig {
         broadcastTemplate = "_<BROADCAST> %s_";
         achievementTemplate = "**%a has just earned the achievement [%s]**";
         deathTemplate = "**%s**";
+        firstJoinTemplate = "_Welcome **%a** to the server!_";
     }
 
     @Setting
@@ -43,6 +44,8 @@ public class ChannelDiscordConfig {
     public String achievementTemplate;
     @Setting
     public String deathTemplate;
+    @Setting
+    public  String firstJoinTemplate;
 
 
     @Deprecated

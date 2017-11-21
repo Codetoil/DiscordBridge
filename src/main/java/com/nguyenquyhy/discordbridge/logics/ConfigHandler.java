@@ -2,12 +2,12 @@ package com.nguyenquyhy.discordbridge.logics;
 
 import com.google.common.reflect.TypeToken;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.database.InMemoryStorage;
-import com.nguyenquyhy.discordbridge.database.JsonFileStorage;
 import com.nguyenquyhy.discordbridge.config.ChannelConfig;
 import com.nguyenquyhy.discordbridge.config.GlobalConfig;
 import com.nguyenquyhy.discordbridge.config.TokenStore;
 import com.nguyenquyhy.discordbridge.config.command.CommandConfig;
+import com.nguyenquyhy.discordbridge.database.InMemoryStorage;
+import com.nguyenquyhy.discordbridge.database.JsonFileStorage;
 import com.nguyenquyhy.discordbridge.utils.ConfigUtil;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;

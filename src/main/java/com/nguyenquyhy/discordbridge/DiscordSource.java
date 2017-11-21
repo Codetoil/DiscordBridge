@@ -2,7 +2,6 @@ package com.nguyenquyhy.discordbridge;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;

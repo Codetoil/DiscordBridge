@@ -11,7 +11,7 @@ import de.btobastian.javacord.entities.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.filter.cause.Root;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 
 import java.util.UUID;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class ClientConnectionListener {
 
     @Listener
-    public void onJoin(ClientConnectionEvent.Join event, @Root Player player) {
+    public void onJoin(ClientConnectionEvent.Join event, @First Player player) {
         if (!player.hasPermission("nucleus.connectionmessages.disable")) {
 
             DiscordBridge mod = DiscordBridge.getInstance();
@@ -48,7 +48,7 @@ public class ClientConnectionListener {
     }
 
     @Listener
-    public void onDisconnect(ClientConnectionEvent.Disconnect event, @Root Player player) {
+    public void onDisconnect(ClientConnectionEvent.Disconnect event, @First Player player) {
         if (!player.hasPermission("nucleus.connectionmessages.disable")) {
             DiscordBridge mod = DiscordBridge.getInstance();
             GlobalConfig config = mod.getConfig();
@@ -77,8 +77,12 @@ public class ClientConnectionListener {
                     mod.getLogger().info(player.getName() + " has disconnected!");
 
                 }
+                mod.removeAndLogoutClient(playerId);
+                //unauthenticatedPlayers.remove(playerId);
+                mod.getLogger().info(player.getName() + " has disconnected!");
             }
         }
+
     }
 
 }
